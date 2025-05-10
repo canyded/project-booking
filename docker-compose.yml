@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  app:
+    container_name: my-spring-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      JAVA_OPTS: "-Xms256m -Xmx512m"
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/booking_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    networks:
+      - booking_network
+    restart: unless-stopped
+
+networks:
+  booking_network:
+    external: true

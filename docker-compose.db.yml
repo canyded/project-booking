@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: postgres_db
+    image: postgres:16
+    environment:
+      POSTGRES_DB: booking_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    ports:
+      - "5433:5432"  # Host port 5433 maps to container port 5432
+    networks:
+      booking_network:
+        aliases:
+          - db
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  booking_network:
+    external: true
